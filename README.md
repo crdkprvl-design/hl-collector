@@ -14,6 +14,7 @@ Trading idea:
 - `analyze_signal_log.py`: post-analysis of logged signal outcomes (win-rate by density bucket)
 - `calibrate_thresholds.py`: one-shot market-wide calibration for wall-size thresholds
 - `backtest_imbalance_sample.py`: historical backtest for Imbalance Labs sample (24 symbols, 7d)
+- `derive_quality_rules.py`: derives robust quality filters from collected real-time outcomes
 - `hyperliquid_client.py`, `app.py`, `screener.py`: previous MVP files (kept for reference)
 
 ## Requirements
@@ -85,6 +86,18 @@ Analyze cloud logs:
 
 ```bash
 py -3 analyze_signal_log.py --log-glob "cloud_data/events_*.jsonl"
+```
+
+Derive "high-quality wall" rules from local or cloud collector logs:
+
+```bash
+py -3 derive_quality_rules.py --log-path data/signal_events_all_pairs.jsonl --out-json data/quality_rules.json
+```
+
+Run screener with derived quality profile:
+
+```bash
+py -3 density_screener.py --quality-rules-json data/quality_rules.json --quality-profile strict
 ```
 
 ## One-Shot Threshold Calibration

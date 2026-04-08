@@ -18,6 +18,7 @@ INFO_ENDPOINT = "https://api.hyperliquid.xyz/info"
 
 @dataclass(frozen=True)
 class ScreenerConfig:
+    market_filter: str = "all"
     min_wall_ratio: float = 10.0
     min_wall_notional_usd: float = 50_000.0
     min_day_volume_usd: float = 1_000_000.0
@@ -246,6 +247,8 @@ def detect_observations(
 
     def task(asset: tuple[str, str, str]) -> list[WallObservation]:
         market, coin, display = asset
+        if cfg.market_filter != "all" and market != cfg.market_filter:
+            return []
         if day_volume.get(coin, 0.0) < cfg.min_day_volume_usd:
             return []
 
@@ -546,7 +549,9 @@ def update_candidates(
 
 
 def run(args: argparse.Namespace) -> None:
+    apply_quality_profile(args)
     cfg = ScreenerConfig(
+        market_filter=args.market_filter,
         min_wall_ratio=args.min_wall_ratio,
         min_wall_notional_usd=args.min_wall_usd,
         min_day_volume_usd=args.min_day_volume_usd,
@@ -609,6 +614,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-wall-ratio", type=float, default=10.0)
     parser.add_argument("--min-wall-usd", type=float, default=50_000.0)
     parser.add_argument("--min-day-volume-usd", type=float, default=1_000_000.0)
+    parser.add_argument("--market-filter", choices=["all", "perp", "spot"], default="all")
     parser.add_argument("--approach-ticks", type=int, default=4)
     parser.add_argument("--breakout-ticks", type=int, default=2)
     parser.add_argument("--bounce-pct", type=float, default=0.5)
@@ -621,8 +627,52 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--http-timeout-sec", type=int, default=12)
     parser.add_argument("--top-n", type=int, default=25)
     parser.add_argument("--log-path", default="data/signal_events.jsonl")
+    parser.add_argument("--quality-rules-json", default="", help="Path to output of derive_quality_rules.py")
+    parser.add_argument("--quality-profile", choices=["strict", "balanced", "flow"], default="strict")
     parser.add_argument("--run-seconds", type=int, default=0, help="0 = run forever")
     return parser.parse_args()
+
+
+def apply_quality_profile(args: argparse.Namespace) -> None:
+    if not args.quality_rules_json:
+        return
+
+    path = Path(args.quality_rules_json)
+    if not path.exists():
+        safe_print(f"quality profile skipped: file not found: {path}")
+        return
+
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # noqa: BLE001
+        safe_print(f"quality profile skipped: cannot parse JSON ({exc})")
+        return
+
+    profiles = obj.get("profiles")
+    if not isinstance(profiles, dict):
+        safe_print("quality profile skipped: 'profiles' section missing")
+        return
+
+    profile = profiles.get(args.quality_profile)
+    if not isinstance(profile, dict):
+        safe_print(f"quality profile skipped: profile '{args.quality_profile}' unavailable")
+        return
+
+    market = profile.get("market", "all")
+    if market not in {"all", "perp", "spot"}:
+        market = "all"
+
+    args.market_filter = market
+    args.min_wall_ratio = float(profile.get("min_ratio", args.min_wall_ratio))
+    args.min_wall_usd = float(profile.get("min_notional_usd", args.min_wall_usd))
+    args.min_day_volume_usd = float(profile.get("min_day_volume_usd", args.min_day_volume_usd))
+
+    safe_print(
+        "Applied quality profile "
+        f"'{args.quality_profile}': market={args.market_filter}, "
+        f"min_ratio={args.min_wall_ratio}, min_wall_usd={args.min_wall_usd}, "
+        f"min_day_volume_usd={args.min_day_volume_usd}"
+    )
 
 
 if __name__ == "__main__":
