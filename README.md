@@ -76,11 +76,14 @@ What it does:
 - collects events for ~4 minutes
 - appends events to `cloud_data/events_YYYY-MM-DD.jsonl`
 - commits and pushes updates automatically
+- derives `cloud_data/quality_rules.json` from collected outcomes
+- triggers next run automatically (cron fallback) unless disabled
 
 Important:
 - this is server-like cloud execution, but not a dedicated always-on VPS
 - scheduled jobs can have slight delays
 - repository must allow workflow write access to contents
+- optional repo variable `HL_CHAIN_ENABLED=false` disables self-trigger chain
 
 Analyze cloud logs:
 
