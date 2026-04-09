@@ -40,6 +40,7 @@ jobs:
           mkdir -p cloud_data
           DATE_UTC=$(date -u +%F)
           LOG_PATH="cloud_data/events_${DATE_UTC}.jsonl"
+          touch "$LOG_PATH"
           echo "date_utc=$DATE_UTC" >> "$GITHUB_OUTPUT"
           echo "log_path=$LOG_PATH" >> "$GITHUB_OUTPUT"
 
@@ -52,10 +53,12 @@ jobs:
             --approach-ticks 4 \
             --breakout-ticks 2 \
             --bounce-pct 0.5 \
+            --min-persistence-sec 10 \
+            --max-signal-age-sec 180 \
             --scan-interval-sec 15 \
             --mids-poll-sec 1 \
             --metadata-refresh-sec 300 \
-            --run-seconds 230 \
+            --run-seconds 260 \
             --log-path "${{ steps.prep.outputs.log_path }}"
 
       - name: Update run log
@@ -71,7 +74,7 @@ jobs:
             python -u derive_quality_rules.py \
               --log-glob "cloud_data/events_*.jsonl" \
               --out-json "cloud_data/quality_rules.json" \
-              --min-resolved 50 || true
+              --min-resolved 30 || true
           else
             echo "No cloud event files yet."
           fi
