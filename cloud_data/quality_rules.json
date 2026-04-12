@@ -1,19 +1,19 @@
 {
   "source": "cloud_data/events_*.jsonl (4 files)",
-  "events_loaded": 594,
+  "events_loaded": 778,
   "overall": {
-    "cases_total": 37,
-    "resolved_total": 37,
-    "bounced_total": 15,
+    "cases_total": 44,
+    "resolved_total": 44,
+    "bounced_total": 16,
     "expired_total": 0,
-    "win_rate_pct": 40.54054054054054,
+    "win_rate_pct": 36.36363636363637,
     "by_market": {
       "perp": {
-        "resolved": 32,
-        "bounced": 14
+        "resolved": 37,
+        "bounced": 15
       },
       "spot": {
-        "resolved": 5,
+        "resolved": 7,
         "bounced": 1
       }
     }
@@ -29,39 +29,52 @@
       "min_ratio": 3.0,
       "min_notional_usd": 10000.0,
       "min_day_volume_usd": 0.0,
-      "resolved": 32,
-      "bounced": 14,
-      "win_rate": 0.4375,
-      "win_rate_pct": 43.75,
-      "wilson_lb": 0.28165085969443177,
-      "wilson_lb_pct": 28.165085969443176,
-      "avg_lifetime_sec": 6.11600261926651
-    },
-    {
-      "market": "all",
-      "min_ratio": 3.0,
-      "min_notional_usd": 10000.0,
-      "min_day_volume_usd": 0.0,
       "resolved": 37,
       "bounced": 15,
       "win_rate": 0.40540540540540543,
       "win_rate_pct": 40.54054054054054,
       "wilson_lb": 0.2634629583994014,
       "wilson_lb_pct": 26.346295839940144,
-      "avg_lifetime_sec": 5.913432430576634
+      "avg_lifetime_sec": 6.284005880355835
+    },
+    {
+      "market": "all",
+      "min_ratio": 3.0,
+      "min_notional_usd": 10000.0,
+      "min_day_volume_usd": 0.0,
+      "resolved": 44,
+      "bounced": 16,
+      "win_rate": 0.36363636363636365,
+      "win_rate_pct": 36.36363636363637,
+      "wilson_lb": 0.23783334127491426,
+      "wilson_lb_pct": 23.783334127491425,
+      "avg_lifetime_sec": 7.001615285873413
+    },
+    {
+      "market": "perp",
+      "min_ratio": 5.0,
+      "min_notional_usd": 10000.0,
+      "min_day_volume_usd": 0.0,
+      "resolved": 32,
+      "bounced": 12,
+      "win_rate": 0.375,
+      "win_rate_pct": 37.5,
+      "wilson_lb": 0.2293366846595921,
+      "wilson_lb_pct": 22.933668465959208,
+      "avg_lifetime_sec": 4.158773221075535
     },
     {
       "market": "all",
       "min_ratio": 5.0,
       "min_notional_usd": 10000.0,
       "min_day_volume_usd": 0.0,
-      "resolved": 32,
+      "resolved": 38,
       "bounced": 13,
-      "win_rate": 0.40625,
-      "win_rate_pct": 40.625,
-      "wilson_lb": 0.25519402480313796,
-      "wilson_lb_pct": 25.519402480313797,
-      "avg_lifetime_sec": 3.594192862510681
+      "win_rate": 0.34210526315789475,
+      "win_rate_pct": 34.21052631578947,
+      "wilson_lb": 0.21212220026458956,
+      "wilson_lb_pct": 21.212220026458954,
+      "avg_lifetime_sec": 5.344130842309249
     }
   ]
 }
