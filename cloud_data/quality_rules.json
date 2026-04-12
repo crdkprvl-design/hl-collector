@@ -1,0 +1,41 @@
+{
+  "source": "cloud_data/events_*.jsonl (4 files)",
+  "events_loaded": 483,
+  "overall": {
+    "cases_total": 33,
+    "resolved_total": 33,
+    "bounced_total": 12,
+    "expired_total": 0,
+    "win_rate_pct": 36.36363636363637,
+    "by_market": {
+      "perp": {
+        "resolved": 29,
+        "bounced": 11
+      },
+      "spot": {
+        "resolved": 4,
+        "bounced": 1
+      }
+    }
+  },
+  "profiles": {
+    "strict": null,
+    "balanced": null,
+    "flow": null
+  },
+  "top_rules": [
+    {
+      "market": "all",
+      "min_ratio": 3.0,
+      "min_notional_usd": 10000.0,
+      "min_day_volume_usd": 0.0,
+      "resolved": 33,
+      "bounced": 12,
+      "win_rate": 0.36363636363636365,
+      "win_rate_pct": 36.36363636363637,
+      "wilson_lb": 0.22186966167959873,
+      "wilson_lb_pct": 22.186966167959874,
+      "avg_lifetime_sec": 6.19092438437722
+    }
+  ]
+}
