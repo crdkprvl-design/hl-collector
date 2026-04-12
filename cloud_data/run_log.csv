@@ -998,3 +998,4 @@ timestamp_utc,run_id,workflow,log_path
 2026-04-12T15:11:37Z,24309634040,Hyperliquid Collector,cloud_data/events_2026-04-12.jsonl
 2026-04-12T15:16:29Z,24309724667,Hyperliquid Collector,cloud_data/events_2026-04-12.jsonl
 2026-04-12T15:21:26Z,24309816000,Hyperliquid Collector,cloud_data/events_2026-04-12.jsonl
+2026-04-12T15:26:23Z,24309908883,Hyperliquid Collector,cloud_data/events_2026-04-12.jsonl
