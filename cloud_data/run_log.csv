@@ -1277,3 +1277,4 @@ timestamp_utc,run_id,workflow,log_path
 2026-04-13T14:15:20Z,24348039664,Hyperliquid Collector,cloud_data/events_2026-04-13.jsonl
 2026-04-13T14:20:16Z,24348281298,Hyperliquid Collector,cloud_data/events_2026-04-13.jsonl
 2026-04-13T14:25:42Z,24348519211,Hyperliquid Collector,cloud_data/events_2026-04-13.jsonl
+2026-04-13T14:31:24Z,24348782242,Hyperliquid Collector,cloud_data/events_2026-04-13.jsonl
