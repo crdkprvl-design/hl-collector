@@ -40,6 +40,9 @@ def resolve_source_paths(log_path: Path, cloud_glob: str) -> list[Path]:
     if cloud_glob:
         for path in sorted(Path(".").glob(cloud_glob)):
             if path.is_file():
+                lower_name = path.name.lower()
+                if "_smoke" in lower_name or "_test" in lower_name:
+                    continue
                 paths.append(path)
     if log_path.exists():
         paths.append(log_path)
