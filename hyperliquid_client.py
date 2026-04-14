@@ -33,6 +33,7 @@ class HyperliquidClient:
     def __init__(self, timeout_seconds: int = 12) -> None:
         self.timeout_seconds = timeout_seconds
         self.session = requests.Session()
+        self.session.trust_env = False
 
     def fetch_perp_market_snapshots(self, dex: str = "") -> list[MarketSnapshot]:
         payload: dict[str, Any] = {"type": "metaAndAssetCtxs"}

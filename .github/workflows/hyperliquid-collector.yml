@@ -74,6 +74,7 @@ jobs:
             python -u derive_quality_rules.py \
               --log-glob "cloud_data/events_*.jsonl" \
               --out-json "cloud_data/quality_rules.json" \
+              --mode quick \
               --min-resolved 30 || true
           else
             echo "No cloud event files yet."

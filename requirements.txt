@@ -1,1 +1,4 @@
 requests>=2.32.0
+websockets>=12.0
+scikit-learn>=1.5.0
+joblib>=1.4.0

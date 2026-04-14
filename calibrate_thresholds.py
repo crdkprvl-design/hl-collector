@@ -43,6 +43,7 @@ def format_usd(value: float) -> str:
 class API:
     def __init__(self, timeout: int) -> None:
         self.session = requests.Session()
+        self.session.trust_env = False
         self.timeout = timeout
 
     def post(self, payload: dict[str, Any]) -> Any:

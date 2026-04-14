@@ -22,10 +22,20 @@ if (-not (Test-Path $pidFile)) {
         if ($proc) {
             Write-Output "Collector status: running. PID=$collectorPid"
         } else {
-            Write-Output "Collector status: stale PID file (PID=$collectorPid not found)."
+            Remove-Item -LiteralPath $pidFile -Force -ErrorAction SilentlyContinue
+            if (Test-Path $pidFile) {
+                Write-Output "Collector status: stale PID file still present (PID=$collectorPid not found)."
+            } else {
+                Write-Output "Collector status: stale PID file removed (PID=$collectorPid not found)."
+            }
         }
     } else {
-        Write-Output "Collector status: invalid PID file."
+        Remove-Item -LiteralPath $pidFile -Force -ErrorAction SilentlyContinue
+        if (Test-Path $pidFile) {
+            Write-Output "Collector status: invalid PID file still present."
+        } else {
+            Write-Output "Collector status: invalid PID file removed."
+        }
     }
 }
 

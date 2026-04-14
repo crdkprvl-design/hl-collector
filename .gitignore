@@ -9,3 +9,5 @@ build/
 dist/
 *.spec
 data/
+launcher_app/.codex_obj/
+launcher_app/.codex_bin/

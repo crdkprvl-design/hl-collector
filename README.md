@@ -15,12 +15,15 @@ Trading idea:
 - `calibrate_thresholds.py`: one-shot market-wide calibration for wall-size thresholds
 - `backtest_imbalance_sample.py`: historical backtest for Imbalance Labs sample (24 symbols, 7d)
 - `derive_quality_rules.py`: derives robust quality filters from collected real-time outcomes
+- `good_density_screener.py`: compact screener output (`direction / coin / wall price`)
+- `good_density_gui.py`: GUI app (dark theme) with one best signal per coin
 - `hyperliquid_client.py`, `app.py`, `screener.py`: previous MVP files (kept for reference)
 
 ## Requirements
 
 - Python 3.10+
 - `requests`
+- `websockets` (for low-latency WS mode with automatic fallback)
 
 ## Install
 
@@ -67,6 +70,30 @@ Collector outputs:
 - `data/collector_stdout.log`
 - `data/collector_stderr.log`
 
+## Daily Ironclad Report
+
+Generate a 24h quality report from collected real outcomes:
+
+```bash
+powershell -ExecutionPolicy Bypass -File .\run_daily_ironclad_report.ps1 -WindowHours 24
+```
+
+Outputs:
+- `data/reports/ironclad_daily_YYYY-MM-DD.json`
+- `data/reports/ironclad_daily_YYYY-MM-DD.md`
+
+Rebuild anti-fake ironclad filter from real outcomes:
+
+```bash
+powershell -ExecutionPolicy Bypass -File .\run_derive_ironclad_filters.ps1 -WindowHours 0 -MinResolved 80
+```
+
+Output:
+- `data/ironclad_filters.json`
+
+Protocol file:
+- `docs/IRONCLAD_PROTOCOL.md`
+
 ## Cloud Collector via GitHub Actions (No Server Needed)
 
 Use workflow: `.github/workflows/hyperliquid-collector.yml`
@@ -102,6 +129,29 @@ Run screener with derived quality profile:
 ```bash
 py -3 density_screener.py --quality-rules-json data/quality_rules.json --quality-profile strict
 ```
+
+Optional low-latency source mode (default is `auto`):
+
+```bash
+py -3 density_screener.py --book-source auto --ws-max-books 220
+```
+
+- `--book-source auto`: uses WebSocket mids and WebSocket l2 books when available, falls back to REST polling automatically
+- `--book-source ws`: force WS path (with REST fallback for missing books)
+- `--book-source polling`: legacy REST-only behavior
+
+Run compact signal feed (only direction, coin, price):
+
+```bash
+py -3 good_density_screener.py --quality-rules-json data/quality_rules.json --quality-profile strict
+```
+
+Desktop GUI app (no command line):
+
+- recommended: double-click `run_latest_gui.cmd` (always starts the latest Python GUI + collector)
+- legacy: `StartScreenerGUI.exe` in project root
+- window icon file: `assets/screener_icon.ico`
+- GUI shows only one best signal per coin
 
 ## One-Shot Threshold Calibration
 
